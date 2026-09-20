@@ -157,7 +157,7 @@ RULES:
 Extract all structured data as JSON."""
 
         response = self.client.messages.create(
-            model="claude-3-5-haiku-20241022",
+            model="claude-3-haiku-20240307",
             max_tokens=4096,
             system=system_prompt,
             messages=[{"role": "user", "content": user_prompt}],

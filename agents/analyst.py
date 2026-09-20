@@ -97,7 +97,7 @@ COMPARISON DATA:
         self.chat_history.append({"role": "user", "content": question})
 
         response = self.client.messages.create(
-            model="claude-3-5-sonnet-20241022",
+            model="claude-3-5-sonnet-20240620",
             max_tokens=4096,
             system=self._system_prompt(),
             messages=self.chat_history,

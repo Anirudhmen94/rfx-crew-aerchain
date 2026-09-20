@@ -49,7 +49,7 @@ Be conversational but efficient. If the buyer says 'corrugated packaging' use th
         """Send a message to the drafter agent and get a response."""
         self.history.append({"role": "user", "content": user_message})
         response = self.client.messages.create(
-            model="claude-3-5-haiku-20241022",
+            model="claude-3-haiku-20240307",
             max_tokens=4096,
             system=self._system_prompt(),
             messages=self.history,
