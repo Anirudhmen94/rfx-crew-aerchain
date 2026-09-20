@@ -1,0 +1,227 @@
+{
+  "vendor": "PackRight Industries",
+  "rfx_ref": "RFX-2024-001",
+  "currency": "INR",
+  "validity_days": 30,
+  "questionnaire": {
+    "ISO 9001 certified": "Yes, cert no. QMS-2021-4872",
+    "Lead time (days)": "12",
+    "VMI offered": "Yes, for orders above ₹15 lakh/month",
+    "MOQ per SKU": "500 pieces",
+    "FSC certified material": "Available on request, +4% premium",
+    "Defect rate (last 12 months)": "0.3%",
+    "Returns for quality failures": "Yes, full replacement within 7 days"
+  },
+  "line_items": [
+    {
+      "line_id": 1,
+      "description": "3-ply corrugated box 30x20x15 cm",
+      "unit_price_inr": 18.5,
+      "uom": "per box",
+      "notes": ""
+    },
+    {
+      "line_id": 2,
+      "description": "3-ply corrugated box 40x30x20 cm",
+      "unit_price_inr": 26.0,
+      "uom": "per box",
+      "notes": ""
+    },
+    {
+      "line_id": 3,
+      "description": "3-ply corrugated box 50x40x30 cm",
+      "unit_price_inr": 38.0,
+      "uom": "per box",
+      "notes": ""
+    },
+    {
+      "line_id": 4,
+      "description": "5-ply corrugated box 30x20x15 cm",
+      "unit_price_inr": 28.0,
+      "uom": "per box",
+      "notes": ""
+    },
+    {
+      "line_id": 5,
+      "description": "5-ply corrugated box 40x30x20 cm",
+      "unit_price_inr": 40.0,
+      "uom": "per box",
+      "notes": ""
+    },
+    {
+      "line_id": 6,
+      "description": "5-ply corrugated box 50x40x30 cm",
+      "unit_price_inr": 56.0,
+      "uom": "per box",
+      "notes": ""
+    },
+    {
+      "line_id": 7,
+      "description": "7-ply heavy-duty box 60x50x40 cm",
+      "unit_price_inr": 120.0,
+      "uom": "per box",
+      "notes": ""
+    },
+    {
+      "line_id": 8,
+      "description": "7-ply heavy-duty box 80x60x50 cm",
+      "unit_price_inr": 175.0,
+      "uom": "per box",
+      "notes": ""
+    },
+    {
+      "line_id": 9,
+      "description": "3-ply die-cut mailer 25x20x5 cm",
+      "unit_price_inr": 14.0,
+      "uom": "per box",
+      "notes": ""
+    },
+    {
+      "line_id": 10,
+      "description": "5-ply die-cut mailer 35x25x8 cm",
+      "unit_price_inr": 22.0,
+      "uom": "per box",
+      "notes": ""
+    },
+    {
+      "line_id": 11,
+      "description": "Corrugated pallet tray 120x80 cm",
+      "unit_price_inr": 85.0,
+      "uom": "per piece",
+      "notes": ""
+    },
+    {
+      "line_id": 12,
+      "description": "Corrugated corner guard 60 cm",
+      "unit_price_inr": 4.5,
+      "uom": "per piece",
+      "notes": ""
+    },
+    {
+      "line_id": 13,
+      "description": "Corrugated corner guard 90 cm",
+      "unit_price_inr": 6.0,
+      "uom": "per piece",
+      "notes": ""
+    },
+    {
+      "line_id": 14,
+      "description": "Corrugated sheet 3-ply 120x80 cm",
+      "unit_price_inr": 12.0,
+      "uom": "per sheet",
+      "notes": ""
+    },
+    {
+      "line_id": 15,
+      "description": "Corrugated sheet 5-ply 120x80 cm",
+      "unit_price_inr": 18.0,
+      "uom": "per sheet",
+      "notes": ""
+    },
+    {
+      "line_id": 16,
+      "description": "Corrugated tube 50mm dia 30cm",
+      "unit_price_inr": 9.0,
+      "uom": "per piece",
+      "notes": ""
+    },
+    {
+      "line_id": 17,
+      "description": "Corrugated tube 75mm dia 30cm",
+      "unit_price_inr": 14.0,
+      "uom": "per piece",
+      "notes": ""
+    },
+    {
+      "line_id": 18,
+      "description": "Partitioned box 6-cell 3-ply",
+      "unit_price_inr": 95.0,
+      "uom": "per box",
+      "notes": ""
+    },
+    {
+      "line_id": 19,
+      "description": "Partitioned box 12-cell 3-ply",
+      "unit_price_inr": 140.0,
+      "uom": "per box",
+      "notes": ""
+    },
+    {
+      "line_id": 20,
+      "description": "Partitioned box 24-cell 5-ply",
+      "unit_price_inr": 210.0,
+      "uom": "per box",
+      "notes": ""
+    },
+    {
+      "line_id": 21,
+      "description": "Telescopic box outer 3-ply 40x30x20",
+      "unit_price_inr": 65.0,
+      "uom": "per box",
+      "notes": ""
+    },
+    {
+      "line_id": 22,
+      "description": "Telescopic box inner 3-ply 40x30x20",
+      "unit_price_inr": 60.0,
+      "uom": "per box",
+      "notes": ""
+    },
+    {
+      "line_id": 23,
+      "description": "Archive box 3-ply 40x30x25 cm",
+      "unit_price_inr": 55.0,
+      "uom": "per box",
+      "notes": ""
+    },
+    {
+      "line_id": 24,
+      "description": "Archive box 5-ply 40x30x25 cm",
+      "unit_price_inr": 75.0,
+      "uom": "per box",
+      "notes": ""
+    },
+    {
+      "line_id": 25,
+      "description": "Kraft tape 48mm x 100m",
+      "unit_price_inr": 38.0,
+      "uom": "per roll",
+      "notes": ""
+    },
+    {
+      "line_id": 26,
+      "description": "Bubble wrap roll 1.2m x 50m",
+      "unit_price_inr": 420.0,
+      "uom": "per roll",
+      "notes": ""
+    },
+    {
+      "line_id": 27,
+      "description": "Foam sheet 5mm 120x80 cm",
+      "unit_price_inr": 35.0,
+      "uom": "per sheet",
+      "notes": ""
+    },
+    {
+      "line_id": 28,
+      "description": "Strapping band 12mm PP",
+      "unit_price_inr": 185.0,
+      "uom": "per kg",
+      "notes": ""
+    },
+    {
+      "line_id": 29,
+      "description": "Shrink wrap roll 500mm x 300m",
+      "unit_price_inr": 880.0,
+      "uom": "per roll",
+      "notes": ""
+    },
+    {
+      "line_id": 30,
+      "description": "Wooden pallet 120x80 standard",
+      "unit_price_inr": 650.0,
+      "uom": "per piece",
+      "notes": ""
+    }
+  ]
+}

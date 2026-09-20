@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+*.pyo
+.env
+.streamlit/secrets.toml
+data/rfx_output/dispatch_log_*.json
+data/rfx_output/raw_extractions.json
+data/rfx_output/comparison_matrix.json
+data/rfx_output/sent_*.txt

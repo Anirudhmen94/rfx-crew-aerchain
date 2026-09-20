@@ -1,0 +1,228 @@
+{
+  "rfx_id": "RFX-2024-001",
+  "title": "Corrugated Packaging — Annual Rate Contract",
+  "buyer": "Category Manager, Packaging",
+  "issued_date": "2024-07-08",
+  "response_deadline": "2024-07-17",
+  "currency": "INR",
+  "delivery_location": "Pune Warehouse, Maharashtra",
+  "terms": "45-day payment, F.O.R. destination",
+  "line_items": [
+    {
+      "id": 1,
+      "description": "3-ply corrugated box 30x20x15 cm",
+      "uom": "per box",
+      "qty": 10000
+    },
+    {
+      "id": 2,
+      "description": "3-ply corrugated box 40x30x20 cm",
+      "uom": "per box",
+      "qty": 8000
+    },
+    {
+      "id": 3,
+      "description": "3-ply corrugated box 50x40x30 cm",
+      "uom": "per box",
+      "qty": 5000
+    },
+    {
+      "id": 4,
+      "description": "5-ply corrugated box 30x20x15 cm",
+      "uom": "per box",
+      "qty": 10000
+    },
+    {
+      "id": 5,
+      "description": "5-ply corrugated box 40x30x20 cm",
+      "uom": "per box",
+      "qty": 8000
+    },
+    {
+      "id": 6,
+      "description": "5-ply corrugated box 50x40x30 cm",
+      "uom": "per box",
+      "qty": 6000
+    },
+    {
+      "id": 7,
+      "description": "7-ply heavy-duty box 60x50x40 cm",
+      "uom": "per box",
+      "qty": 2000
+    },
+    {
+      "id": 8,
+      "description": "7-ply heavy-duty box 80x60x50 cm",
+      "uom": "per box",
+      "qty": 1500
+    },
+    {
+      "id": 9,
+      "description": "3-ply die-cut mailer 25x20x5 cm",
+      "uom": "per box",
+      "qty": 20000
+    },
+    {
+      "id": 10,
+      "description": "5-ply die-cut mailer 35x25x8 cm",
+      "uom": "per box",
+      "qty": 15000
+    },
+    {
+      "id": 11,
+      "description": "Corrugated pallet tray 120x80 cm",
+      "uom": "per piece",
+      "qty": 3000
+    },
+    {
+      "id": 12,
+      "description": "Corrugated corner guard 60 cm",
+      "uom": "per piece",
+      "qty": 50000
+    },
+    {
+      "id": 13,
+      "description": "Corrugated corner guard 90 cm",
+      "uom": "per piece",
+      "qty": 30000
+    },
+    {
+      "id": 14,
+      "description": "Corrugated sheet 3-ply 120x80 cm",
+      "uom": "per sheet",
+      "qty": 20000
+    },
+    {
+      "id": 15,
+      "description": "Corrugated sheet 5-ply 120x80 cm",
+      "uom": "per sheet",
+      "qty": 15000
+    },
+    {
+      "id": 16,
+      "description": "Corrugated tube 50mm dia 30cm",
+      "uom": "per piece",
+      "qty": 10000
+    },
+    {
+      "id": 17,
+      "description": "Corrugated tube 75mm dia 30cm",
+      "uom": "per piece",
+      "qty": 8000
+    },
+    {
+      "id": 18,
+      "description": "Partitioned box 6-cell 3-ply",
+      "uom": "per box",
+      "qty": 5000
+    },
+    {
+      "id": 19,
+      "description": "Partitioned box 12-cell 3-ply",
+      "uom": "per box",
+      "qty": 4000
+    },
+    {
+      "id": 20,
+      "description": "Partitioned box 24-cell 5-ply",
+      "uom": "per box",
+      "qty": 2500
+    },
+    {
+      "id": 21,
+      "description": "Telescopic box outer 3-ply 40x30x20",
+      "uom": "per box",
+      "qty": 4000
+    },
+    {
+      "id": 22,
+      "description": "Telescopic box inner 3-ply 40x30x20",
+      "uom": "per box",
+      "qty": 4000
+    },
+    {
+      "id": 23,
+      "description": "Archive box 3-ply 40x30x25 cm",
+      "uom": "per box",
+      "qty": 10000
+    },
+    {
+      "id": 24,
+      "description": "Archive box 5-ply 40x30x25 cm",
+      "uom": "per box",
+      "qty": 8000
+    },
+    {
+      "id": 25,
+      "description": "Kraft tape 48mm x 100m",
+      "uom": "per roll",
+      "qty": 20000
+    },
+    {
+      "id": 26,
+      "description": "Bubble wrap roll 1.2m x 50m",
+      "uom": "per roll",
+      "qty": 2000
+    },
+    {
+      "id": 27,
+      "description": "Foam sheet 5mm 120x80 cm",
+      "uom": "per sheet",
+      "qty": 5000
+    },
+    {
+      "id": 28,
+      "description": "Strapping band 12mm PP",
+      "uom": "per kg",
+      "qty": 3000
+    },
+    {
+      "id": 29,
+      "description": "Shrink wrap roll 500mm x 300m",
+      "uom": "per roll",
+      "qty": 1500
+    },
+    {
+      "id": 30,
+      "description": "Wooden pallet 120x80 standard",
+      "uom": "per piece",
+      "qty": 1000
+    }
+  ],
+  "questionnaire": [
+    "Is your facility ISO 9001 certified?",
+    "What is your standard lead time in days?",
+    "Do you offer VMI (Vendor Managed Inventory)?",
+    "What is your minimum order quantity per SKU?",
+    "Can you provide FSC-certified corrugated material?",
+    "What is your rejection / defect rate (last 12 months)?",
+    "Do you accept returns for quality failures?"
+  ],
+  "vendors": [
+    {
+      "id": "V1",
+      "name": "PackRight Industries",
+      "contact": "sales@packright.in"
+    },
+    {
+      "id": "V2",
+      "name": "BoxCraft Solutions",
+      "contact": "quotes@boxcraft.in"
+    },
+    {
+      "id": "V3",
+      "name": "GlobalPack Ltd",
+      "contact": "rfq@globalpack.com"
+    },
+    {
+      "id": "V4",
+      "name": "SwiftBox Pvt Ltd",
+      "contact": "info@swiftbox.in"
+    },
+    {
+      "id": "V5",
+      "name": "CorreBox Manufacturing",
+      "contact": "procurement@correbox.in"
+    }
+  ]
+}
