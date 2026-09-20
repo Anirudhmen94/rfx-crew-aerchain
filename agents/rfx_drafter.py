@@ -1,16 +1,13 @@
 """
 agents/rfx_drafter.py
-Agent 1: RFx Drafter
-Assignment requirement: "A buyer talks an RFx into existence with an AI co-pilot —
-scope, line items, questionnaire, terms."
-This agent takes buyer inputs and builds a structured RFx JSON.
+Agent 1: RFx Drafter — uses Anthropic Claude
 """
 
 import json
 import os
-from datetime import datetime, timedelta
+import re
 from typing import Optional
-from openai import OpenAI
+import anthropic
 
 
 class RFxDrafterAgent:
@@ -19,7 +16,7 @@ class RFxDrafterAgent:
     Assignment: 'buyer talks an RFx into existence with an AI co-pilot'
     """
 
-    def __init__(self, client: OpenAI):
+    def __init__(self, client: anthropic.Anthropic):
         self.client = client
         self.history = []
         self.rfx = {}
@@ -51,18 +48,18 @@ Be conversational but efficient. If the buyer says 'corrugated packaging' use th
     def chat(self, user_message: str) -> str:
         """Send a message to the drafter agent and get a response."""
         self.history.append({"role": "user", "content": user_message})
-        response = self.client.chat.completions.create(
-            model="gpt-4o-mini",
-            messages=[{"role": "system", "content": self._system_prompt()}] + self.history,
-            temperature=0.3,
+        response = self.client.messages.create(
+            model="claude-3-5-haiku-20241022",
+            max_tokens=4096,
+            system=self._system_prompt(),
+            messages=self.history,
         )
-        reply = response.choices[0].message.content
+        reply = response.content[0].text
         self.history.append({"role": "assistant", "content": reply})
         return reply
 
     def extract_rfx_from_reply(self, reply: str) -> Optional[dict]:
         """Parse the JSON block from the agent's reply if present."""
-        import re
         match = re.search(r"```json\s*(.*?)```", reply, re.DOTALL)
         if match:
             try:
@@ -71,10 +68,9 @@ Be conversational but efficient. If the buyer says 'corrugated packaging' use th
                 return None
         return None
 
-    def quick_draft(self, category: str = "corrugated packaging") -> dict:
+    def quick_draft(self, category: str = "corrugated packaging") -> tuple:
         """
         Shortcut: produce a complete RFx for demo purposes using the AI.
-        The AI generates the structure — not hardcoded.
         Assignment: 'don't hardcode the answers to your demo questions'
         """
         prompt = f"""Draft a complete RFx for {category}. 

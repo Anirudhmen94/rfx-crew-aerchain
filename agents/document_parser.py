@@ -1,42 +1,26 @@
 """
 agents/document_parser.py
-Agent 3: Document Parser
-Assignment requirement: "Vendors reply however they like; nobody is forced into your template.
-Your system reads every response, whatever shape it arrives in."
-"Don't fake the extraction" — real parsing per format.
-
-Handles:
-- JSON  (V1 PackRight — structured)
-- CSV   (V2 BoxCraft — Excel-like, unit mismatch)
-- TXT   (V3 GlobalPack — PDF-style text with USD prices)
-- TXT   (V4 SwiftBox — informal email, kg-rate references)
-- TXT   (V5 CorreBox — Word-doc style, missing lines)
-
-The LLM is used for ambiguous/unstructured formats (email text, Word doc text).
-Structured formats (JSON, CSV) are parsed deterministically.
-Assignment: "AI loops must be real" for the unstructured cases.
+Agent 3: Document Parser — uses Anthropic Claude
+Assignment: "Don't fake the extraction" — real parsing per format.
 """
 
 import csv
 import io
 import json
 import os
-import re
 from typing import Any
-from openai import OpenAI
+import anthropic
 
 
 class DocumentParserAgent:
     """
     Reads vendor responses in any format and returns raw extracted data.
-    Does NOT normalize — that's the Normalizer agent's job.
-    Assignment: real extraction from real files, not hardcoded.
+    Structured formats (JSON, CSV) parsed deterministically.
+    Unstructured formats (text/email/Word) use Claude.
     """
 
-    def __init__(self, client: OpenAI):
+    def __init__(self, client: anthropic.Anthropic):
         self.client = client
-
-    # ── Format detectors ────────────────────────────────────────────────────
 
     def _detect_format(self, filepath: str) -> str:
         ext = os.path.splitext(filepath)[1].lower()
@@ -44,11 +28,7 @@ class DocumentParserAgent:
             return "json"
         if ext in (".csv", ".xlsx", ".xls"):
             return "csv"
-        if ext in (".txt", ".eml"):
-            return "text"
         return "text"
-
-    # ── Parsers ─────────────────────────────────────────────────────────────
 
     def _parse_json(self, filepath: str) -> dict:
         """Structured JSON — deterministic parse."""
@@ -75,10 +55,7 @@ class DocumentParserAgent:
         }
 
     def _parse_csv(self, filepath: str) -> dict:
-        """
-        CSV parse — handles mixed line items and questionnaire sections.
-        Assignment ugly edge: BoxCraft uses 'per 100 pcs' UOM for some items.
-        """
+        """CSV parse — handles mixed line items and questionnaire sections."""
         with open(filepath, "r", encoding="utf-8") as f:
             raw = f.read()
 
@@ -101,7 +78,6 @@ class DocumentParserAgent:
                     questionnaire_raw[row[0].strip()] = row[1].strip()
                 continue
 
-            # Try to parse as line item: first col is numeric id
             try:
                 line_id = int(row[0].strip())
             except (ValueError, IndexError):
@@ -135,9 +111,8 @@ class DocumentParserAgent:
 
     def _parse_text_with_llm(self, filepath: str, vendor_hint: str = "") -> dict:
         """
-        Use the LLM to extract structured data from unstructured text.
-        Assignment: "AI loops must be real" — the LLM genuinely reads and extracts.
-        Used for: PDF-style text, email text, Word-doc text.
+        Use Claude to extract structured data from unstructured text.
+        Assignment: "AI loops must be real" — Claude genuinely reads and extracts.
         """
         with open(filepath, "r", encoding="utf-8") as f:
             raw_text = f.read()
@@ -165,11 +140,12 @@ Extract vendor quote data from the text provided. Return ONLY a JSON object with
 
 RULES:
 - If price is given as ₹X/kg, extract as kg-based price and note the UOM
-- If a line is ambiguous (e.g. '5-ply add 50% to 3-ply prices'), extract what you can and flag
+- If a line is ambiguous, extract what you can and flag it
 - If lines are missing, do not invent them — leave them out
-- If the vendor says 'same as last year' for some items, note that explicitly
-- Extract questionnaire answers even if they're mixed into the text body
-- Confidence = high if prices are explicit, medium if inferred, low if guessed"""
+- If the vendor says 'same as last year', note that explicitly
+- Extract questionnaire answers even if mixed into the text body
+- Confidence = high if prices are explicit, medium if inferred, low if guessed
+- Return valid JSON only, no other text"""
 
         user_prompt = f"""Vendor file: {os.path.basename(filepath)}
 {f'Vendor hint: {vendor_hint}' if vendor_hint else ''}
@@ -180,27 +156,25 @@ RULES:
 
 Extract all structured data as JSON."""
 
-        response = self.client.chat.completions.create(
-            model="gpt-4o-mini",
-            messages=[
-                {"role": "system", "content": system_prompt},
-                {"role": "user", "content": user_prompt},
-            ],
-            temperature=0.1,
-            response_format={"type": "json_object"},
+        response = self.client.messages.create(
+            model="claude-3-5-haiku-20241022",
+            max_tokens=4096,
+            system=system_prompt,
+            messages=[{"role": "user", "content": user_prompt}],
         )
 
-        extracted = json.loads(response.choices[0].message.content)
-        extracted["parse_method"] = "llm_extraction"
+        text = response.content[0].text.strip()
+        # Strip markdown code fences if present
+        if text.startswith("```"):
+            text = text.split("```")[1]
+            if text.startswith("json"):
+                text = text[4:]
+        extracted = json.loads(text.strip())
+        extracted["parse_method"] = "claude_extraction"
         return extracted
 
-    # ── Main entry point ─────────────────────────────────────────────────────
-
     def parse(self, filepath: str, vendor_hint: str = "") -> dict:
-        """
-        Parse a vendor response file. Returns raw extracted data.
-        The format is auto-detected; unstructured formats use the LLM.
-        """
+        """Parse a vendor response file. Format is auto-detected."""
         fmt = self._detect_format(filepath)
         if fmt == "json":
             result = self._parse_json(filepath)
@@ -213,10 +187,7 @@ Extract all structured data as JSON."""
         return result
 
     def parse_all(self, vendor_dir: str) -> list:
-        """
-        Parse all vendor response files in a directory.
-        Returns a list of raw extracted dicts.
-        """
+        """Parse all vendor response files in a directory."""
         results = []
         vendor_hints = {
             "V1": "PackRight Industries",
@@ -229,12 +200,7 @@ Extract all structured data as JSON."""
             filepath = os.path.join(vendor_dir, filename)
             if not os.path.isfile(filepath):
                 continue
-            # Determine vendor hint from filename prefix
-            hint = ""
-            for vid, vname in vendor_hints.items():
-                if filename.startswith(vid):
-                    hint = vname
-                    break
+            hint = next((vname for vid, vname in vendor_hints.items() if filename.startswith(vid)), "")
             print(f"  Parsing: {filename} (hint: {hint or 'none'})")
             result = self.parse(filepath, hint)
             result["vendor_id"] = filename[:2] if filename[:2].startswith("V") else None
