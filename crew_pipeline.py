@@ -31,8 +31,9 @@ class RFxCrew:
     Each agent has a single responsibility; this class wires them together.
     """
 
-    def __init__(self, anthropic_api_key: str = None):
-        api_key = anthropic_api_key or os.environ.get("ANTHROPIC_API_KEY")
+    def __init__(self, anthropic_api_key: str = None, openai_api_key: str = None):
+        # Accept both names for compatibility; anthropic_api_key takes precedence
+        api_key = anthropic_api_key or openai_api_key or os.environ.get("ANTHROPIC_API_KEY")
         if not api_key:
             raise ValueError("ANTHROPIC_API_KEY must be set (env var or passed directly)")
 
