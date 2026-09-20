@@ -15,8 +15,13 @@ import io
 import pandas as pd
 import streamlit as st
 
-# Add project root to path
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
+# Ensure project root is on sys.path regardless of how this file is executed
+# (direct streamlit run, runpy, exec, or Streamlit Cloud)
+_HERE = os.path.dirname(os.path.abspath(__file__))
+_ROOT = os.path.dirname(_HERE)  # one level up from ui/ → repo root
+for _p in [_ROOT, _HERE]:
+    if _p not in sys.path:
+        sys.path.insert(0, _p)
 
 from crew_pipeline import RFxCrew
 from agents.normalizer import RFX_LINE_ITEMS
@@ -30,7 +35,7 @@ st.set_page_config(
 )
 
 # ── Constants ────────────────────────────────────────────────────────────────
-BASE_DIR = os.path.join(os.path.dirname(__file__), "..")
+BASE_DIR = _ROOT
 OUTPUT_DIR = os.path.join(BASE_DIR, "data", "rfx_output")
 VENDOR_DIR = os.path.join(BASE_DIR, "data", "vendor_responses")
 
