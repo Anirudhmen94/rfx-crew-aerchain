@@ -1,4 +1,4 @@
-openai==1.51.0
+anthropic==1.7.0
 streamlit==1.39.0
 pandas==2.2.3
 pypdf==4.3.1

@@ -57,13 +57,13 @@ def resolve_api_key() -> str:
     """Check Streamlit secrets first (Cloud deployment), then env var, then session state."""
     # Streamlit Cloud: key stored in app secrets
     try:
-        key = st.secrets.get("OPENAI_API_KEY", "")
+        key = st.secrets.get("ANTHROPIC_API_KEY", "")
         if key:
             return key
     except Exception:
         pass
     # Local: env var
-    key = os.environ.get("OPENAI_API_KEY", "")
+    key = os.environ.get("ANTHROPIC_API_KEY", "")
     if key:
         return key
     # UI input (fallback for local dev)
@@ -77,7 +77,7 @@ def get_crew() -> RFxCrew:
         if not api_key:
             return None
         with st.spinner("🔄 Running pipeline: parsing vendor responses & normalizing..."):
-            crew = RFxCrew(openai_api_key=api_key)
+            crew = RFxCrew(anthropic_api_key=api_key)
             crew.run_full_pipeline(use_existing_rfx=True)
         st.session_state["crew"] = crew
     return st.session_state["crew"]
@@ -94,11 +94,11 @@ with st.sidebar:
     if not auto_key:
         st.markdown("### ⚙️ Configuration")
         api_key_input = st.text_input(
-            "OpenAI API Key",
+            "Anthropic API Key",
             value="",
             type="password",
-            help="Enter your OpenAI API key to run the AI agents",
-            placeholder="sk-...",
+            help="Enter your Anthropic API key to run the AI agents",
+            placeholder="sk-ant-...",
         )
         if api_key_input:
             st.session_state["api_key"] = api_key_input

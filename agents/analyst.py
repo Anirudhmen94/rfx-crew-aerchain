@@ -1,38 +1,29 @@
 """
 agents/analyst.py
-Agent 5: Analyst
-Assignment requirement: "the buyer stops clicking and starts asking. Natural language,
-over the whole comparison. Text answers, tables, charts, exports."
-"don't fake the reasoning, don't hardcode the answers to your demo questions"
-This agent answers buyer questions over the normalized comparison matrix using real LLM reasoning.
+Agent 5: Analyst — uses Anthropic Claude
+Assignment: "don't fake the reasoning, don't hardcode the answers"
 """
 
 import json
-from openai import OpenAI
+import anthropic
 
 
 class AnalystAgent:
     """
     Answers buyer natural-language questions over the comparison matrix.
-    Assignment: "Real analysis on real extracted data, all the way to a defensible award decision."
-    Uses the LLM to reason; never hardcodes answers.
+    Uses Claude for real reasoning over real extracted data.
     """
 
-    def __init__(self, client: OpenAI):
+    def __init__(self, client: anthropic.Anthropic):
         self.client = client
         self.comparison = None
         self.chat_history = []
 
     def load_comparison(self, comparison: dict):
-        """Load the normalized comparison matrix."""
         self.comparison = comparison
         self.chat_history = []
 
     def _build_context_summary(self) -> str:
-        """
-        Build a compact, token-efficient JSON summary of the comparison for the LLM.
-        The LLM reasons over real data — not hardcoded.
-        """
         if not self.comparison:
             return "No comparison data loaded."
 
@@ -42,7 +33,6 @@ class AnalystAgent:
         vendor_summaries = self.comparison["vendor_summaries"]
         usd_rate = self.comparison.get("usd_rate", 83.5)
 
-        # Build compact line-item table
         lines = []
         for lid in sorted(matrix.keys()):
             row = matrix[lid]
@@ -63,7 +53,6 @@ class AnalystAgent:
             }
             lines.append(entry)
 
-        # Vendor summaries
         vendor_info = {}
         for vid, summary in vendor_summaries.items():
             vendor_info[vid] = {
@@ -83,50 +72,43 @@ class AnalystAgent:
             "vendor_info": vendor_info,
             "line_items": lines,
         }
-
         return json.dumps(context, indent=2, ensure_ascii=False)
 
     def _system_prompt(self) -> str:
+        usd_rate = self.comparison.get("usd_rate", 83.5) if self.comparison else 83.5
         context = self._build_context_summary()
         return f"""You are an expert procurement analyst. You have access to a normalized vendor comparison for a corrugated packaging RFx (30 line items, 5 vendors).
 
 IMPORTANT RULES:
 1. Base ALL answers on the actual data provided — never hallucinate or assume prices not in the data
-2. When you're uncertain (e.g. vendor didn't quote a line), say so explicitly
-3. For currency: all prices in the comparison are already in INR. GlobalPack (V3) originally quoted in USD and was converted at ₹{self.comparison.get('usd_rate', 83.5) if self.comparison else 83.5}/USD — flag this exchange rate risk when relevant
-4. When a vendor quoted "per 100 pcs" and it was converted to "per piece", mention that the original UOM was different
-5. Qualify your award recommendations — state what assumptions were made
+2. When uncertain (e.g. vendor didn't quote a line), say so explicitly
+3. For currency: all prices are already in INR. GlobalPack (V3) originally quoted in USD, converted at ₹{usd_rate}/USD — flag exchange rate risk when relevant
+4. When a vendor quoted "per 100 pcs" and it was converted to "per piece", mention the original UOM
+5. Qualify your award recommendations — state assumptions made
 6. The VP's question ("cheapest per line, among vendors who cleared the quality questionnaire") is a key analysis you should always be able to answer
 7. Format tables using markdown when the answer benefits from it
-8. For export requests, acknowledge and note that the UI will generate the file
+8. For export requests, acknowledge and note the UI will generate the file
 
 COMPARISON DATA:
 {context}"""
 
     def ask(self, question: str) -> str:
-        """
-        Answer a buyer's natural-language question.
-        Assignment: "don't fake the reasoning, don't hardcode the answers"
-        """
+        """Answer a buyer's natural-language question using Claude."""
         self.chat_history.append({"role": "user", "content": question})
 
-        messages = [{"role": "system", "content": self._system_prompt()}] + self.chat_history
-
-        response = self.client.chat.completions.create(
-            model="gpt-4o",
-            messages=messages,
-            temperature=0.2,
+        response = self.client.messages.create(
+            model="claude-3-5-sonnet-20241022",
+            max_tokens=4096,
+            system=self._system_prompt(),
+            messages=self.chat_history,
         )
 
-        answer = response.choices[0].message.content
+        answer = response.content[0].text
         self.chat_history.append({"role": "assistant", "content": answer})
         return answer
 
     def get_award_recommendation(self) -> str:
-        """
-        Generate a defensible award decision.
-        Assignment: "all the way to a defensible award decision"
-        """
+        """Generate a defensible award decision."""
         prompt = """Generate a complete award recommendation for this RFx.
 
 Structure your answer as:
@@ -138,9 +120,7 @@ Structure your answer as:
 6. What was deliberately left out or uncertain
 
 Be honest about gaps. A buyer with ₹4 crore on the line needs to trust this."""
-
         return self.ask(prompt)
 
     def reset(self):
-        """Reset conversation history (not the comparison data)."""
         self.chat_history = []

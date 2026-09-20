@@ -13,7 +13,7 @@ Assignment ugly edges handled here:
 import json
 import os
 from typing import Optional
-from openai import OpenAI
+import anthropic
 
 # Reference: 30 RFx line items (canonical IDs and descriptions)
 RFX_LINE_ITEMS = [
@@ -76,7 +76,7 @@ class NormalizerAgent:
     Assignment: "same lines, same units, same currency"
     """
 
-    def __init__(self, client: OpenAI, usd_to_inr: float = USD_TO_INR):
+    def __init__(self, client: anthropic.Anthropic, usd_to_inr: float = USD_TO_INR):
         self.client = client
         self.usd_to_inr = usd_to_inr
 
